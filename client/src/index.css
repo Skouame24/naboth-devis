@@ -1,0 +1,222 @@
+/*
+ * Direction artistique — Flux en mouvement
+ * SaaS éditorial lumineux inspiré des interfaces connectées de ngrok.
+ * Bleu marine = confiance, jaune Naboth = action, corail = attention.
+ * Les écrans utilisent des surfaces ivoire, des tracés de connexion et une typographie Space Grotesk + Manrope.
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-sans: "Manrope", sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 5px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 1rem;
+  --background: oklch(0.984 0.009 90);
+  --foreground: oklch(0.24 0.04 245);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.04 245);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.04 245);
+  --primary: oklch(0.27 0.08 248);
+  --primary-foreground: oklch(0.99 0.005 90);
+  --secondary: oklch(0.95 0.03 85);
+  --secondary-foreground: oklch(0.29 0.07 246);
+  --muted: oklch(0.95 0.015 90);
+  --muted-foreground: oklch(0.48 0.035 245);
+  --accent: oklch(0.77 0.16 82);
+  --accent-foreground: oklch(0.24 0.06 62);
+  --destructive: oklch(0.62 0.16 30);
+  --destructive-foreground: oklch(0.99 0.005 90);
+  --border: oklch(0.88 0.022 245);
+  --input: oklch(0.88 0.022 245);
+  --ring: oklch(0.66 0.12 82);
+}
+
+* { border-color: var(--border); }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #fbfaf7;
+  color: #112a46;
+  font-family: "Manrope", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.font-display { font-family: "Space Grotesk", sans-serif; }
+.bg-ivory { background: #fbfaf7; }
+.text-navy { color: #112a46; }
+.text-coral { color: #e45a48; }
+.text-sun { color: #f5b43c; }
+.bg-navy { background: #112a46; }
+.bg-sun { background: #f5b43c; }
+.bg-coral { background: #e45a48; }
+.border-navy { border-color: #112a46; }
+
+.shell-grid {
+  background-image: linear-gradient(rgba(17, 42, 70, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(17, 42, 70, 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.dot-grid {
+  background-image: radial-gradient(rgba(17, 42, 70, 0.22) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+.noise {
+  position: relative;
+}
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.btn-action { transition: transform 160ms cubic-bezier(.23,1,.32,1), box-shadow 160ms ease, background-color 160ms ease; }
+.btn-action:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(17,42,70,.14); }
+.btn-action:active { transform: scale(.97); }
+.soft-shadow { box-shadow: 0 18px 55px rgba(17,42,70,.10); }
+.card-shadow { box-shadow: 0 8px 28px rgba(17,42,70,.07), 0 1px 2px rgba(17,42,70,.04); }
+
+/* Industrial Soft Motion Utilities */
+.hover-lift {
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms ease, border-color 180ms ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(17, 42, 70, 0.10);
+}
+
+.hover-glow-yellow:hover {
+  border-color: #F5B43C;
+  box-shadow: 0 12px 30px rgba(245, 180, 60, 0.15);
+}
+
+.hover-glow-navy:hover {
+  border-color: #112A46;
+  box-shadow: 0 12px 30px rgba(17, 42, 70, 0.16);
+}
+
+.status-beacon-green {
+  box-shadow: 0 0 0 0 rgba(49, 116, 89, 0.4);
+  animation: beacon-pulse-green 2.2s infinite;
+}
+
+.status-beacon-yellow {
+  box-shadow: 0 0 0 0 rgba(245, 180, 60, 0.5);
+  animation: beacon-pulse-yellow 2.2s infinite;
+}
+
+@keyframes beacon-pulse-green {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(49, 116, 89, 0.5); }
+  70% { transform: scale(1); box-shadow: 0 0 0 7px rgba(49, 116, 89, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(49, 116, 89, 0); }
+}
+
+@keyframes beacon-pulse-yellow {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 180, 60, 0.6); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(245, 180, 60, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 180, 60, 0); }
+}
+
+@keyframes float-slow { 0%,100% { transform: translateY(0) rotate(-0.5deg); } 50% { transform: translateY(-7px) rotate(0.5deg); } }
+@keyframes pulse-route { 0%,100% { opacity: .45; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.08); } }
+@keyframes reveal-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scale-in-soft { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+.animate-pulse-route { animation: pulse-route 2.4s ease-in-out infinite; }
+.animate-scale-in { animation: scale-in-soft 220ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Beam & Flow Track Animations */
+@keyframes beam-travel {
+  0% { transform: translateX(-100%); opacity: 0; }
+  30% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateX(250%); opacity: 0; }
+}
+
+.animate-beam {
+  animation: beam-travel 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes ambient-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(15px, -20px) scale(1.08); }
+}
+
+.ambient-blob {
+  animation: ambient-float 12s ease-in-out infinite;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.workflow-path { background: linear-gradient(90deg, #F5B43C 0%, #F5B43C 42%, #dfe8e3 42%, #dfe8e3 100%); background-size: 220% 100%; animation: path-progress 4.8s cubic-bezier(.23,1,.32,1) infinite; }
+.workflow-node { animation: node-breathe 2.8s ease-in-out infinite; }
+.workflow-node:nth-child(2) { animation-delay: .28s; }
+.workflow-node:nth-child(3) { animation-delay: .56s; }
+.workflow-node:nth-child(4) { animation-delay: .84s; }
+.workflow-node:nth-child(5) { animation-delay: 1.12s; }
+@keyframes path-progress { 0%, 12% { background-position: 100% 0; } 65%, 100% { background-position: 0 0; } }
+@keyframes node-breathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(245,180,60,.0); } 45% { box-shadow: 0 0 0 7px rgba(245,180,60,.13); } }
+.reveal-up { animation: reveal-up 550ms cubic-bezier(.23,1,.32,1) both; }
+.reveal-delay-1 { animation-delay: 90ms; }
+.reveal-delay-2 { animation-delay: 160ms; }
+.reveal-delay-3 { animation-delay: 230ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+@media (max-width: 900px) {
+  .shell-grid { background-size: 24px 24px; }
+}
+
+
+/* Modèle de devis : sortie papier/PDF sans chrome d’édition. */
+@media print {
+  body { background: #fff !important; }
+  header, nav, button, input, label, .print-hide { display: none !important; }
+  main { max-width: none !important; padding: 0 !important; }
+  main > div:first-child, main > div:first-child + div { display: none !important; }
+  main > div:last-child { background: #fff !important; padding: 0 !important; }
+  main > div:last-child > div:first-child { display: none !important; }
+  main > div:last-child > div:last-child { box-shadow: none !important; max-width: none !important; }
+  @page { margin: 12mm; size: A4; }
+}
