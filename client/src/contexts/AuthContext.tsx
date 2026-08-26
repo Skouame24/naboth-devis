@@ -8,33 +8,46 @@ export interface UserProfile {
   role: UserRole;
   roleLabel: string;
   initials: string;
-  company?: string;
+  company: string;
+  isNabothUser?: boolean;
 }
 
 interface AuthContextType {
   role: UserRole;
   user: UserProfile;
   setRole: (role: UserRole) => void;
-  setUserProfile: (profile: Partial<UserProfile> & { role: UserRole }) => void;
+  setUserProfile: (profile: Partial<UserProfile> & { role: UserRole; isNabothUser?: boolean }) => void;
   canAccess: (permission: "admin_section" | "import_data" | "manage_users" | "customize_template") => boolean;
 }
 
-const ADMIN_USER: UserProfile = {
+const YASEE_ADMIN_USER: UserProfile = {
   name: "Aïcha Mbaye",
-  email: "admin@naboth.corp",
+  email: "admin@yasee-it.com",
   role: "admin",
-  roleLabel: "Administrateur",
+  roleLabel: "Administrateur Yasee IT",
   initials: "AM",
-  company: "Atelier Kora",
+  company: "Yasee IT",
+  isNabothUser: false,
+};
+
+const NABOTH_USER: UserProfile = {
+  name: "Jean Naboth",
+  email: "contact@naboth.corp",
+  role: "admin",
+  roleLabel: "Client Naboth",
+  initials: "JN",
+  company: "Naboth SARL",
+  isNabothUser: true,
 };
 
 const LAMBDA_USER: UserProfile = {
   name: "Moussa Diop",
   email: "moussa@atelierkora.fr",
   role: "lambda",
-  roleLabel: "Utilisateur (Collaborateur)",
+  roleLabel: "Collaborateur Client",
   initials: "MD",
   company: "Atelier Kora",
+  isNabothUser: false,
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,13 +59,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const setRole = (newRole: UserRole) => {
     setRoleState(newRole);
     if (newRole === "admin") {
-      setCustomUser(ADMIN_USER);
+      setCustomUser(YASEE_ADMIN_USER);
     } else {
       setCustomUser(LAMBDA_USER);
     }
   };
 
-  const setUserProfile = (profile: Partial<UserProfile> & { role: UserRole }) => {
+  const setUserProfile = (profile: Partial<UserProfile> & { role: UserRole; isNabothUser?: boolean }) => {
     setRoleState(profile.role);
     const initials = profile.name
       ? profile.name
@@ -66,17 +79,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       ? "AM"
       : "MD";
 
+    const isNaboth = Boolean(profile.isNabothUser || (profile.email && profile.email.toLowerCase().includes("naboth")));
+
     setCustomUser({
-      name: profile.name || (profile.role === "admin" ? ADMIN_USER.name : LAMBDA_USER.name),
-      email: profile.email || (profile.role === "admin" ? ADMIN_USER.email : LAMBDA_USER.email),
+      name: profile.name || (isNaboth ? NABOTH_USER.name : profile.role === "admin" ? YASEE_ADMIN_USER.name : LAMBDA_USER.name),
+      email: profile.email || (isNaboth ? NABOTH_USER.email : profile.role === "admin" ? YASEE_ADMIN_USER.email : LAMBDA_USER.email),
       role: profile.role,
-      roleLabel: profile.role === "admin" ? "Administrateur" : "Utilisateur (Collaborateur)",
-      initials: initials || "ND",
-      company: profile.company || "Atelier Kora",
+      roleLabel: isNaboth ? "Client Naboth (Compte Dédié)" : profile.role === "admin" ? "Administrateur Yasee IT" : "Collaborateur Client",
+      initials: initials || (isNaboth ? "JN" : "AM"),
+      company: profile.company || (isNaboth ? "Naboth SARL" : "Yasee IT"),
+      isNabothUser: isNaboth,
     });
   };
 
-  const user = customUser || (role === "admin" ? ADMIN_USER : LAMBDA_USER);
+  const user = customUser || (role === "admin" ? YASEE_ADMIN_USER : LAMBDA_USER);
 
   const canAccess = (permission: "admin_section" | "import_data" | "manage_users" | "customize_template") => {
     if (role === "admin") return true;
@@ -97,4 +113,3 @@ export function useAuth() {
   }
   return context;
 }
-

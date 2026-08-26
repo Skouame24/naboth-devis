@@ -1,7 +1,6 @@
 /*
- * Direction artistique — Flux en mouvement
- * Le routeur conserve une expérience lumineuse, éditoriale et connectée.
- * Chaque espace reprend le bleu Naboth comme structure et le jaune comme appel à l’action.
+ * Fast Devis par Yasee IT
+ * Plateforme SaaS multi-chartes avec personnalisation dynamique des thèmes clients.
  */
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +8,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { CharterProvider } from "./contexts/CharterContext";
 import Home, { AppPage } from "./pages/Home";
 import { AuthPage, ClientQuotePage, RegisterPage } from "./pages/AdditionalPages";
 import NotFound from "./pages/NotFound";
@@ -32,12 +32,14 @@ export default function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
-        </AuthProvider>
+        <CharterProvider>
+          <AuthProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Router />
+            </TooltipProvider>
+          </AuthProvider>
+        </CharterProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
